@@ -32,9 +32,26 @@ window.addEventListener('scroll', () => {
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.navbar-menu');
 
-if (hamburger) {
+if (hamburger && navMenu) {
     hamburger.addEventListener('click', () => {
-        navMenu.style.display = navMenu.style.display === 'flex' ? 'none' : 'flex';
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    });
+
+    // Close menu when clicking a nav link
+    navMenu.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        });
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+        }
     });
 }
 
@@ -152,9 +169,9 @@ document.querySelectorAll('section').forEach(section => {
     }
 
     render()
-})()
+})();
 
-(function(){
+;(function(){
     const hero = document.querySelector('.hero-section')
     const title = document.querySelector('.hero-title.interactive')
     const orbs = document.querySelectorAll('.hero-decor .orb')
@@ -203,9 +220,9 @@ document.querySelectorAll('section').forEach(section => {
             }
         })
     }
-})()
+})();
 
-(function() {
+;(function() {
     const modal = document.getElementById('projectModal')
     if (!modal) return
     const backdrop = modal.querySelector('.modal-backdrop')
@@ -213,7 +230,6 @@ document.querySelectorAll('section').forEach(section => {
     const imgEl = modal.querySelector('.modal-image img')
     const titleEl = modal.querySelector('.modal-title')
     const descEl = modal.querySelector('.modal-description')
-    const tagsEl = modal.querySelector('.modal-tags')
     const prevBtn = modal.querySelector('.modal-prev')
     const nextBtn = modal.querySelector('.modal-next')
     const videoWrap = modal.querySelector('.modal-video')
@@ -260,29 +276,29 @@ document.querySelectorAll('section').forEach(section => {
     }
 
     function openForCard(card) {
-        const img = card.querySelector('.project-image img')
-        const title = card.querySelector('.project-content h3')
-        const desc = card.querySelector('.project-content p')
-        const statusEl = card.querySelector('.status-badge')
-        const tagNodes = card.querySelectorAll('.project-tags .tag')
-        const dataOverview = card.getAttribute('data-overview') || ''
-        const dataTechs = card.getAttribute('data-technologies') || ''
+        if (!card) return
+        try {
+            console.log('openForCard called for', card && (card.querySelector('.project-content h3') || card).textContent || card)
+            const img = card.querySelector('.project-image img')
+            const title = card.querySelector('.project-content h3')
+            const desc = card.querySelector('.project-content p')
+            const statusEl = card.querySelector('.status-badge')
+            const tagNodes = card.querySelectorAll('.project-tags .tag')
+            const dataOverview = card.getAttribute('data-overview') || ''
+            const dataTechs = card.getAttribute('data-technologies') || ''
 
-        if (titleEl) titleEl.textContent = title ? title.textContent : ''
-        if (descEl) descEl.textContent = dataOverview || (desc ? desc.textContent : '')
-        if (tagsEl) {
-            tagsEl.innerHTML = ''
-        }
-        if (techsEl) {
-            techsEl.innerHTML = ''
-            const list = dataTechs ? dataTechs.split(',').map(s => s.trim()).filter(Boolean) : Array.from(tagNodes).map(t => t.textContent.trim()).filter(Boolean)
-            list.forEach(name => {
-                const span = document.createElement('span')
-                span.className = 'tag'
-                span.textContent = name
-                techsEl.appendChild(span)
-            })
-        }
+            if (titleEl) titleEl.textContent = title ? title.textContent : ''
+            if (descEl) descEl.textContent = dataOverview || (desc ? desc.textContent : '')
+            if (techsEl) {
+                techsEl.innerHTML = ''
+                const list = dataTechs ? dataTechs.split(',').map(s => s.trim()).filter(Boolean) : Array.from(tagNodes).map(t => t.textContent.trim()).filter(Boolean)
+                list.forEach(name => {
+                    const span = document.createElement('span')
+                    span.className = 'tag'
+                    span.textContent = name
+                    techsEl.appendChild(span)
+                })
+            }
 
         const dataGallery = card.getAttribute('data-gallery')
         const dataDate = card.getAttribute('data-date')
@@ -318,32 +334,60 @@ document.querySelectorAll('section').forEach(section => {
             statusBadge.style.display = statusText ? '' : 'none'
         }
 
-        if (linksEl) {
-            linksEl.innerHTML = ''
-            const dataLinks = card.getAttribute('data-links') || card.getAttribute('data-link') || ''
-            const links = dataLinks.split(',').map(s => s.trim()).filter(Boolean)
-            links.forEach((href, i) => {
-                const a = document.createElement('a')
-                a.href = href
-                a.target = '_blank'
-                a.rel = 'noopener'
-                a.innerHTML = '<i class="fas fa-external-link-alt"></i> View Link' + (links.length > 1 ? ' ' + (i+1) : '')
-                linksEl.appendChild(a)
-            })
+            if (linksEl) {
+                linksEl.innerHTML = ''
+                const dataLinks = card.getAttribute('data-links') || card.getAttribute('data-link') || ''
+                const links = dataLinks ? dataLinks.split(',').map(s => s.trim()).filter(Boolean) : []
+                links.forEach((linkStr, i) => {
+                    let label = 'View Link'
+                    let href = linkStr
+                    const colonIndex = linkStr.indexOf(':')
+                    // try to parse `Label: https://...` patterns
+                    if (colonIndex > 0 && /https?:\/\//i.test(linkStr.slice(colonIndex + 1))) {
+                        label = linkStr.slice(0, colonIndex).trim()
+                        href = linkStr.slice(colonIndex + 1).trim()
+                    }
+                    const a = document.createElement('a')
+                    a.href = href
+                    a.target = '_blank'
+                    a.rel = 'noopener'
+                    a.innerHTML = '<i class="fas fa-external-link-alt"></i> ' + label
+                    linksEl.appendChild(a)
+                })
+                // Hide the links section if no links
+                const linksSection = linksEl.closest('.modal-section')
+                if (linksSection) {
+                    linksSection.style.display = links.length > 0 ? '' : 'none'
+                }
+            }
+            // expose for debug
+            try { window.__lastOpenedCard = card } catch(e) {}
+            render()
+            modal.classList.add('show')
+            modal.setAttribute('aria-hidden','false')
+            if (closeBtn) closeBtn.focus()
+            document.body.style.overflow = 'hidden'
+        } catch (err) {
+            console.error('openForCard error', err)
+            // fallback: show minimal modal with title/overview so user sees something
+            try {
+                const title = card.querySelector('.project-content h3')
+                const desc = card.querySelector('.project-content p')
+                if (titleEl) titleEl.textContent = title ? title.textContent : 'Project'
+                if (descEl) descEl.textContent = card.getAttribute('data-overview') || (desc ? desc.textContent : '')
+                if (techsEl) techsEl.innerHTML = ''
+                if (linksEl) linksEl.innerHTML = ''
+                modal.classList.add('show')
+                modal.setAttribute('aria-hidden','false')
+                document.body.style.overflow = 'hidden'
+            } catch (e2) { console.error('fallback show failed', e2) }
         }
-        render()
-        modal.classList.remove('hidden')
-        modal.style.display = 'flex'
-        modal.setAttribute('aria-hidden','false')
-        requestAnimationFrame(() => { modal.classList.add('show') })
-        if (closeBtn) closeBtn.focus()
-        document.body.style.overflow = 'hidden'
     }
 
     function closeModal() {
         modal.classList.remove('show')
         modal.setAttribute('aria-hidden','true')
-        setTimeout(() => { modal.classList.add('hidden'); modal.style.display = ''; document.body.style.overflow = '' }, 250)
+        document.body.style.overflow = ''
         if (videoEl) {
             try { videoEl.pause() } catch(e) {}
             videoEl.removeAttribute('src')
@@ -351,17 +395,7 @@ document.querySelectorAll('section').forEach(section => {
         }
     }
 
-    const grid = document.querySelector('.projects-grid')
-    if (grid) {
-        grid.addEventListener('click', e => {
-            const card = e.target.closest('.project-card')
-            if (!card || !grid.contains(card)) return
-            const btn = e.target.closest('.view-btn')
-            if (btn) e.preventDefault()
-            openForCard(card)
-        })
-    }
-
+    // Attach click + keyboard handlers to each project card (more reliable than delegation)
     document.querySelectorAll('.project-card').forEach(card => {
         card.setAttribute('tabindex','0')
         card.setAttribute('role','button')
@@ -370,7 +404,16 @@ document.querySelectorAll('section').forEach(section => {
         card.addEventListener('keydown', e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openForCard(card) }
         })
+        card.addEventListener('click', e => {
+            // avoid clicks on inner links triggering duplicate behavior
+            const innerLink = e.target.closest('a')
+            if (innerLink) return
+            try { console.log('project card click:', t ? t.textContent : card) } catch(e) {}
+            try { openForCard(card) } catch (err) { console.error('openForCard threw', err) }
+        })
     })
+    // Expose function for manual testing
+    try { window.openForCard = openForCard } catch(e) {}
 
     // removed explicit .view-btn handlers; entire card click works
 
@@ -403,4 +446,22 @@ document.querySelectorAll('section').forEach(section => {
     if (nextBtn) nextBtn.addEventListener('click', () => {
         if (index < gallery.length - 1) { index += 1; render() }
     })
+
+    // Robust delegated handlers in case cards are re-rendered or filtered
+    const grid = document.querySelector('.projects-grid')
+    if (grid) {
+        grid.addEventListener('click', e => {
+            const card = e.target.closest('.project-card')
+            if (!card) return
+            const innerLink = e.target.closest('a')
+            if (innerLink) return
+            openForCard(card)
+        })
+        grid.addEventListener('keydown', e => {
+            const card = e.target.closest('.project-card')
+            if (!card) return
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openForCard(card) }
+        })
+    }
+
 })()
