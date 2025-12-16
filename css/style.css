@@ -2247,9 +2247,39 @@ body {
 }
 
 .modal-techs,
-.modal-links {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-top: 1rem;
+  .modal-links a {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+@media (max-width: 400px) {
+  .container { padding: 0 12px; }
+  .hero-title { font-size: 1.85rem; }
+  .hero-subtitle { font-size: 1rem; }
+  .hero-description { font-size: 0.9rem; }
+  .btn { padding: 0.55rem 1rem; font-size: 0.8rem; }
+  .about-hero-card { padding: 1.5rem; }
+  .about-stats { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .projects-grid { gap: 1rem; }
+  .project-image { height: 160px; }
+  .projects-toolbar { flex-direction: column; align-items: stretch; }
+  .pagination { margin-left: 0; }
+  .skills-grid { gap: 1rem; }
+  .highlight-card { padding: 1.5rem; }
+  .internship-gallery { grid-template-columns: 1fr; }
+  .modal-content { width: calc(100% - 24px); max-height: 85vh; padding: 16px; }
+  .modal-body { gap: 12px; }
+  .modal-image { height: 180px; }
+  .social-icons a { width: 36px; height: 36px; font-size: 0.95rem; }
+}
+@media (max-width: 360px) {
+  .navbar-brand h2 { font-size: 0.95rem; }
+  .hero-title { font-size: 1.7rem; }
+  .section-header h2 { font-size: 1.4rem; }
+  .filter-tab { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+  .status-badge { font-size: 0.8rem; }
+  .project-content { padding: 1rem; }
+  .footer-content { gap: 1rem; }
 }
