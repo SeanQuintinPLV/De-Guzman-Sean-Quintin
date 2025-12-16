@@ -1589,6 +1589,9 @@ html.modal-open, body.modal-open { overflow: hidden !important; height: 100%; ov
     transform: translateY(8px) scale(0.98);
     opacity: 0;
     transition: transform 250ms ease, opacity 250ms ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .modal.show .modal-content { transform: translateY(0) scale(1); opacity: 1; }
@@ -1604,10 +1607,11 @@ html.modal-open, body.modal-open { overflow: hidden !important; height: 100%; ov
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    overflow: auto;
+    align-items: start;
+    min-height: 0;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
-    align-items: start;
 }
 
 .modal-left .modal-image { height: 420px; border-radius: 12px; overflow: hidden; position: relative; }
@@ -1725,7 +1729,7 @@ html.modal-open, body.modal-open { overflow: hidden !important; height: 100%; ov
     .projects-grid { grid-template-columns: 1fr; gap: 2rem; }
     .project-image { height: 200px; }
     .modal-content { width: calc(100% - 40px); padding: 20px; max-height: 90vh; overflow: hidden; }
-    .modal-body { grid-template-columns: 1fr; }
+    .modal-body { grid-template-columns: 1fr; min-height: 0; }
     .modal-image { height: 180px; }
     .modal-meta { grid-template-columns: 1fr; }
     .project-overlay { opacity: 1; }
@@ -2287,7 +2291,7 @@ html.modal-open, body.modal-open { overflow: hidden !important; height: 100%; ov
   .highlight-card { padding: 1.5rem; }
   .internship-gallery { grid-template-columns: 1fr; }
   .modal-content { width: calc(100% - 24px); max-height: 85vh; padding: 16px; overflow: hidden; }
-  .modal-body { gap: 12px; }
+  .modal-body { gap: 12px; min-height: 0; }
   .modal-image { height: 150px; }
   .modal-description { font-size: 0.98rem; line-height: 1.9; color: var(--dark); }
   .modal-title { font-size: 1.2rem; }
