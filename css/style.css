@@ -1594,7 +1594,7 @@ html { overflow-x: hidden; }
 
 .modal-title { font-size: 1.5rem; font-weight: 800; color: var(--dark); }
 
-.modal-badges { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+.modal-badges { display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap: wrap; }
 .modal-badges .modal-type-badge, .modal-badges .modal-status-badge { display:inline-block; }
 
 .modal-close { background: var(--gray-100); border: 1px solid var(--gray-200); width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
@@ -1604,6 +1604,8 @@ html { overflow-x: hidden; }
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     align-items: start;
 }
 
@@ -1721,13 +1723,15 @@ html { overflow-x: hidden; }
     .container { padding: 0 24px; }
     .projects-grid { grid-template-columns: 1fr; gap: 2rem; }
     .project-image { height: 200px; }
-    .modal-content { width: calc(100% - 40px); padding: 20px; max-height: 90vh; }
+    .modal-content { width: calc(100% - 40px); padding: 20px; max-height: 90vh; overflow: hidden; }
     .modal-body { grid-template-columns: 1fr; }
-    .modal-image { height: 220px; }
+    .modal-image { height: 180px; }
     .modal-meta { grid-template-columns: 1fr; }
     .project-overlay { opacity: 1; }
     .modal-description { font-size: 1rem; line-height: 1.9; color: var(--dark); word-break: break-word; }
     .section-title { font-size: 1.05rem; }
+    .modal-title { font-size: 1.3rem; }
+    .modal-prev, .modal-next { width: 28px; height: 28px; }
 }
     .about-intro { grid-template-columns: 1fr; justify-items: center; }
     .about-photo { width: 140px; height: 140px; }
@@ -2281,10 +2285,12 @@ html { overflow-x: hidden; }
   .skills-grid { gap: 1rem; }
   .highlight-card { padding: 1.5rem; }
   .internship-gallery { grid-template-columns: 1fr; }
-  .modal-content { width: calc(100% - 24px); max-height: 85vh; padding: 16px; }
+  .modal-content { width: calc(100% - 24px); max-height: 85vh; padding: 16px; overflow: hidden; }
   .modal-body { gap: 12px; }
-  .modal-image { height: 180px; }
+  .modal-image { height: 150px; }
   .modal-description { font-size: 0.98rem; line-height: 1.9; color: var(--dark); }
+  .modal-title { font-size: 1.2rem; }
+  .modal-prev, .modal-next { width: 26px; height: 26px; }
   .social-icons a { width: 36px; height: 36px; font-size: 0.95rem; }
 }
 @media (max-width: 360px) {
