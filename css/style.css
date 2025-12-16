@@ -38,6 +38,7 @@ body {
     overflow-x: hidden;
 }
 html { overflow-x: hidden; }
+html.modal-open, body.modal-open { overflow: hidden !important; height: 100%; overscroll-behavior: none; touch-action: none; }
 
 .container {
     max-width: 1200px;

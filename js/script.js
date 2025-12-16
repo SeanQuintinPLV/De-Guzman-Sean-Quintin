@@ -366,7 +366,15 @@ document.querySelectorAll('section').forEach(section => {
             modal.classList.add('show')
             modal.setAttribute('aria-hidden','false')
             if (closeBtn) closeBtn.focus()
-            document.body.style.overflow = 'hidden'
+            try {
+                const sy = window.scrollY || document.documentElement.scrollTop || 0
+                document.documentElement.classList.add('modal-open')
+                document.body.classList.add('modal-open')
+                document.body.dataset.scrollY = String(sy)
+                document.body.style.position = 'fixed'
+                document.body.style.top = `-${sy}px`
+                document.body.style.width = '100%'
+            } catch(e){}
         } catch (err) {
             console.error('openForCard error', err)
             // fallback: show minimal modal with title/overview so user sees something
@@ -379,7 +387,15 @@ document.querySelectorAll('section').forEach(section => {
                 if (linksEl) linksEl.innerHTML = ''
                 modal.classList.add('show')
                 modal.setAttribute('aria-hidden','false')
-                document.body.style.overflow = 'hidden'
+                try {
+                    const sy = window.scrollY || document.documentElement.scrollTop || 0
+                    document.documentElement.classList.add('modal-open')
+                    document.body.classList.add('modal-open')
+                    document.body.dataset.scrollY = String(sy)
+                    document.body.style.position = 'fixed'
+                    document.body.style.top = `-${sy}px`
+                    document.body.style.width = '100%'
+                } catch(e){}
             } catch (e2) { console.error('fallback show failed', e2) }
         }
     }
@@ -387,7 +403,16 @@ document.querySelectorAll('section').forEach(section => {
     function closeModal() {
         modal.classList.remove('show')
         modal.setAttribute('aria-hidden','true')
-        document.body.style.overflow = ''
+        try {
+            const sy = parseInt(document.body.dataset.scrollY || '0', 10) || 0
+            document.documentElement.classList.remove('modal-open')
+            document.body.classList.remove('modal-open')
+            document.body.style.position = ''
+            document.body.style.top = ''
+            document.body.style.width = ''
+            delete document.body.dataset.scrollY
+            window.scrollTo(0, sy)
+        } catch(e){}
         if (videoEl) {
             try { videoEl.pause() } catch(e) {}
             videoEl.removeAttribute('src')
