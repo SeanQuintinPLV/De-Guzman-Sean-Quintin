@@ -7,9 +7,19 @@ import Projects from './components/Projects'
 import Partnership from './components/Partnership'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import Loader from './components/Loader'
 
 function App() {
   const [scrolled, setScrolled] = useState(false)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setLoading(false)
+    }, 5000)
+
+    return () => window.clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,16 +30,19 @@ function App() {
   }, [])
 
   return (
-    <div className="app">
-      <Navbar scrolled={scrolled} />
-      <Hero />
-      <About />
-      <Services />
-      <Projects />
-      <Partnership />
-      <Contact />
-      <Footer />
-    </div>
+    <>
+      <Loader active={loading} />
+      <div className="app" aria-hidden={loading}>
+        <Navbar scrolled={scrolled} />
+        <Hero />
+        <About />
+        <Services />
+        <Projects />
+        <Partnership />
+        <Contact />
+        <Footer />
+      </div>
+    </>
   )
 }
 
