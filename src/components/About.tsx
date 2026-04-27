@@ -1,6 +1,10 @@
 import { aboutGallery, resumeAsset } from '../data/visualAssets'
 
-function About() {
+interface AboutProps {
+  onNavigate?: (page: 'home' | 'about' | 'projects' | 'contact') => void
+}
+
+function About({ onNavigate }: AboutProps) {
   return (
     <section id="about" className="py-24 bg-background-secondary relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
@@ -42,9 +46,19 @@ function About() {
               </div>
             </div>
 
-            <a href="#contact" className="inline-block rounded-full bg-primary px-8 py-4 text-black font-semibold hover:bg-primary-hover transition-all">
-              Let's Work Together
-            </a>
+            {onNavigate ? (
+              <button
+                type="button"
+                onClick={() => onNavigate('contact')}
+                className="inline-block rounded-full bg-primary px-8 py-4 text-black font-semibold hover:bg-primary-hover transition-all"
+              >
+                Let's Work Together
+              </button>
+            ) : (
+              <a href="#contact" className="inline-block rounded-full bg-primary px-8 py-4 text-black font-semibold hover:bg-primary-hover transition-all">
+                Let's Work Together
+              </a>
+            )}
 
             <div className="mt-10 overflow-hidden rounded-[2rem] border border-border bg-background p-0 shadow-[0_25px_65px_rgba(0,0,0,0.35)]">
               <img src={resumeAsset.preview} alt="Resume preview" className="h-64 w-full object-cover" />

@@ -1,5 +1,9 @@
 import { featureAssets, visualAssets, videoAssets } from '../data/visualAssets'
 
+interface ProjectsProps {
+  onNavigate?: (page: 'home' | 'about' | 'projects' | 'contact') => void
+}
+
 const featuredProjects = [
   {
     category: 'Brand & Web',
@@ -51,7 +55,7 @@ const featuredProjects = [
   }
 ]
 
-function Projects() {
+function Projects({ onNavigate }: ProjectsProps) {
   return (
     <section id="projects" className="py-24 bg-background-secondary relative">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent"></div>
@@ -93,9 +97,19 @@ function Projects() {
         </div>
 
         <div className="mt-16 text-center">
-          <a href="#contact" className="inline-flex items-center rounded-full border border-border-light px-8 py-3 text-text font-medium transition-all hover:border-primary hover:text-primary">
-            Commission a Premium Project
-          </a>
+          {onNavigate ? (
+            <button
+              type="button"
+              onClick={() => onNavigate('contact')}
+              className="inline-flex items-center rounded-full border border-border-light px-8 py-3 text-text font-medium transition-all hover:border-primary hover:text-primary"
+            >
+              Commission a Premium Project
+            </button>
+          ) : (
+            <a href="#contact" className="inline-flex items-center rounded-full border border-border-light px-8 py-3 text-text font-medium transition-all hover:border-primary hover:text-primary">
+              Commission a Premium Project
+            </a>
+          )}
         </div>
 
         <div className="mt-24">
