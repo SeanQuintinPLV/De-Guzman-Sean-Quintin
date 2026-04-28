@@ -72,12 +72,12 @@ function Projects({ onNavigate }: ProjectsProps) {
 
         <div className="grid gap-6 md:grid-cols-2">
           {featuredProjects.map((project, index) => (
-            <div key={index} className="group overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,0.25)] transition-all hover:-translate-y-2 hover:border-primary">
+            <div key={index} className="group overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_24px_70px_rgba(0,0,0,0.25)] transition-colors duration-300 hover:border-primary hover:bg-surface/95">
               <div className="relative overflow-hidden bg-background-tertiary">
                 {project.type === 'video' ? (
-                  <video src={project.src} muted loop playsInline className="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-105" controls />
+                  <video src={project.src} muted loop playsInline className="h-72 w-full object-cover" controls />
                 ) : (
-                  <img src={project.src} alt={project.title} className="h-72 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img src={project.src} alt={project.title} className="h-72 w-full object-cover" />
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <span className="absolute left-6 top-6 rounded-full bg-black/50 px-4 py-2 text-xs uppercase tracking-[0.35em] text-accent">{project.category}</span>
@@ -125,7 +125,7 @@ function Projects({ onNavigate }: ProjectsProps) {
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {visualAssets.map((asset, index) => (
-              <article key={index} className="overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_18px_45px_rgba(0,0,0,0.20)] transition-all hover:-translate-y-1">
+              <article key={index} className="overflow-hidden rounded-[2rem] border border-border bg-surface shadow-[0_18px_45px_rgba(0,0,0,0.20)] transition-colors duration-300 hover:border-primary/70 hover:bg-surface/95">
                 {asset.type === 'image' && (
                   <img src={asset.src} alt={asset.title} className="h-64 w-full object-cover" />
                 )}

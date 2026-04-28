@@ -46,7 +46,7 @@ function Contact() {
                   <a 
                     key={social}
                     href="#" 
-                    className="flex h-11 w-11 items-center justify-center rounded-3xl border border-border bg-surface text-sm font-semibold text-text-secondary transition-all hover:-translate-y-0.5 hover:border-primary hover:text-primary"
+                    className="flex h-11 w-11 items-center justify-center rounded-3xl border border-border bg-surface text-sm font-semibold text-text-secondary transition-colors duration-300 hover:border-primary hover:text-primary"
                   >
                     {social}
                   </a>
@@ -103,7 +103,7 @@ function Contact() {
               </div>
               <button 
                 type="submit" 
-                className="w-full rounded-3xl bg-primary px-8 py-4 text-black font-medium transition-all hover:bg-primary-hover hover:-translate-y-0.5"
+                className="w-full rounded-3xl bg-primary px-8 py-4 text-black font-medium transition-colors duration-300 hover:bg-primary-hover"
               >
                 Send Message
               </button>

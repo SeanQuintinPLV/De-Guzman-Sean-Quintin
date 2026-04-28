@@ -1,13 +1,17 @@
-function Footer() {
+interface FooterProps {
+  onNavigate?: (page: 'home' | 'about' | 'projects' | 'contact') => void
+}
+
+function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear()
   
   const footerLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
+    { name: 'Home', href: '#home', page: 'home' as const },
+    { name: 'About', href: '#about', page: 'about' as const },
     { name: 'Services', href: '#services' },
-    { name: 'Projects', href: '#projects' },
+    { name: 'Projects', href: '#projects', page: 'projects' as const },
     { name: 'Partnership', href: '#partnership' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '#contact', page: 'contact' as const },
   ]
 
   return (
@@ -15,10 +19,21 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid gap-10 md:grid-cols-3 pb-10 border-b border-border mb-10">
           <div className="max-w-xs">
-            <a href="#home" className="inline-flex items-center gap-2 font-display text-2xl font-bold tracking-widest text-text mb-4">
-              <span>SEAN QUINTIN</span>
-              <span className="h-2.5 w-2.5 rounded-full bg-primary"></span>
-            </a>
+            {onNavigate ? (
+              <button
+                type="button"
+                onClick={() => onNavigate('home')}
+                className="inline-flex items-center gap-2 font-display text-2xl font-bold tracking-widest text-text mb-4"
+              >
+                <span>SEAN QUINTIN</span>
+                <span className="h-2.5 w-2.5 rounded-full bg-primary"></span>
+              </button>
+            ) : (
+              <a href="#home" className="inline-flex items-center gap-2 font-display text-2xl font-bold tracking-widest text-text mb-4">
+                <span>SEAN QUINTIN</span>
+                <span className="h-2.5 w-2.5 rounded-full bg-primary"></span>
+              </a>
+            )}
             <p className="text-sm text-text-secondary leading-relaxed">
               Crafting premium digital experiences with elegant visuals and modern detail.
             </p>
@@ -29,9 +44,19 @@ function Footer() {
             <ul className="space-y-3">
               {footerLinks.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-sm text-text-secondary hover:text-primary hover:pl-1 transition-all">
-                    {link.name}
-                  </a>
+                  {link.page && onNavigate ? (
+                    <button
+                      type="button"
+                      onClick={() => onNavigate(link.page)}
+                      className="text-sm text-text-secondary hover:text-primary hover:pl-1 transition-all"
+                    >
+                      {link.name}
+                    </button>
+                  ) : (
+                    <a href={link.href} className="text-sm text-text-secondary hover:text-primary hover:pl-1 transition-all">
+                      {link.name}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -41,9 +66,19 @@ function Footer() {
             <h4 className="text-sm font-semibold uppercase tracking-wider text-text mb-4">Get In Touch</h4>
             <p className="text-sm text-text-secondary mb-1">seanquintin@example.com</p>
             <p className="text-sm text-text-secondary mb-4">Philippines</p>
-            <a href="#contact" className="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm text-text transition-all hover:border-primary hover:text-primary">
-              Contact or Resume
-            </a>
+            {onNavigate ? (
+              <button
+                type="button"
+                onClick={() => onNavigate('contact')}
+                className="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm text-text transition-all hover:border-primary hover:text-primary"
+              >
+                Contact or Resume
+              </button>
+            ) : (
+              <a href="#contact" className="inline-flex items-center rounded-full border border-border px-4 py-2 text-sm text-text transition-all hover:border-primary hover:text-primary">
+                Contact or Resume
+              </a>
+            )}
           </div>
         </div>
 

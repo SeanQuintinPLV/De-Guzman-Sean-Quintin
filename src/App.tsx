@@ -42,43 +42,45 @@ function App() {
     return () => window.clearTimeout(transitionTimer.current)
   }, [transitionStage])
 
+  const scrollToHome = () => {
+    if (typeof document === 'undefined') return
+    document.getElementById('home')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   const navigateTo = (page: 'home' | 'about' | 'projects' | 'contact') => {
-    if (page === activePage || transitionStage !== 'idle') return
-
-    const goingHome = page === 'home' && activePage !== 'home'
-    let nextVariant: 'about' | 'projects' | 'contact' | 'home-return'
-
-    if (goingHome) {
-      nextVariant = 'home-return'
-    } else if (page === 'about') {
-      nextVariant = 'about'
-    } else if (page === 'projects') {
-      nextVariant = 'projects'
-    } else {
-      nextVariant = 'contact'
+    if (transitionStage === 'closing') return
+    if (page === activePage) {
+      if (page === 'home') {
+        scrollToHome()
+      }
+      return
     }
 
-    setTransitionVariant(nextVariant)
-    setTransitionStage('closing')
-    setIntroComplete(false)
-    setPageReady(false)
+    const goingHome = page === 'home'
 
-    window.clearTimeout(transitionTimer.current)
-    transitionTimer.current = window.setTimeout(() => {
-      setActivePage(page)
+    if (goingHome) {
+      setTransitionVariant('home-return')
+      setTransitionStage('closing')
+      setIntroComplete(false)
+      setPageReady(false)
 
-      if (goingHome) {
+      window.clearTimeout(transitionTimer.current)
+      transitionTimer.current = window.setTimeout(() => {
+        setActivePage(page)
         setTransitionStage('opening')
         setIntroComplete(true)
         setPageReady(true)
         window.clearTimeout(transitionTimer.current)
         transitionTimer.current = window.setTimeout(() => setTransitionStage('idle'), 450)
-      } else {
-        setTransitionStage('idle')
-        setIntroComplete(true)
-        setPageReady(true)
-      }
-    }, 450)
+      }, 450)
+      return
+    }
+
+    setTransitionVariant(page === 'about' ? 'about' : page === 'projects' ? 'projects' : 'contact')
+    setTransitionStage('idle')
+    setActivePage(page)
+    setIntroComplete(true)
+    setPageReady(true)
   }
 
   const renderPage = () => {
@@ -95,7 +97,7 @@ function App() {
     }
   }
 
-  const showIntroOverlay = activePage === 'home' || transitionStage !== 'idle'
+  const showIntroOverlay = transitionStage !== 'idle' && (activePage === 'home' || transitionVariant === 'home-return')
   const isSideVariant = transitionVariant === 'projects' || transitionVariant === 'contact'
   const barOneDirection = isSideVariant ? 'intro-left' : 'intro-top'
   const barTwoDirection = isSideVariant ? 'intro-right' : 'intro-bottom'
@@ -138,7 +140,7 @@ function App() {
         <main className={`app-page min-h-screen ${pageReady ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'} transition-all duration-500`}>
           {renderPage()}
         </main>
-        {activePage === 'home' ? null : <Footer />}
+        {activePage === 'home' ? null : <Footer onNavigate={navigateTo} />}
       </div>
     </>
   )
