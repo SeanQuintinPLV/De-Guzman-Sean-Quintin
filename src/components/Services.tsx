@@ -45,7 +45,11 @@ const services = [
   },
 ]
 
-function Services() {
+interface ServicesProps {
+  onNavigate?: (page: 'home' | 'about' | 'projects' | 'contact') => void
+}
+
+function Services({ onNavigate }: ServicesProps) {
   return (
     <section id="services" className="py-24 bg-background relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 h-48 bg-[radial-gradient(circle_at_top,rgba(241,228,200,0.12),transparent_50%)]"></div>
@@ -78,9 +82,19 @@ function Services() {
                     </li>
                   ))}
                 </ul>
-                <a href="#contact" className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-hover">
-                  Learn More <span className="ml-2">→</span>
-                </a>
+                {onNavigate ? (
+                  <button
+                    type="button"
+                    onClick={() => onNavigate('contact')}
+                    className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-hover"
+                  >
+                    Learn More <span className="ml-2">→</span>
+                  </button>
+                ) : (
+                  <a href="#contact" className="inline-flex items-center text-sm font-medium text-primary transition-colors hover:text-primary-hover">
+                    Learn More <span className="ml-2">→</span>
+                  </a>
+                )}
               </div>
             </div>
           ))}
